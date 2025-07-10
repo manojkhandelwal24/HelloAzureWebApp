@@ -94,3 +94,4 @@ C:\client\prashant  dhawalkar\repository\hellowebapp\HelloAzureWebApp\HelloAzure
 C:\client\prashant  dhawalkar\repository\hellowebapp\HelloAzureWebApp\HelloAzureWebApp\obj\Debug\net9.0\HelloAzureWebApp.pdb
 C:\client\prashant  dhawalkar\repository\hellowebapp\HelloAzureWebApp\HelloAzureWebApp\obj\Debug\net9.0\HelloAzureWebApp.genruntimeconfig.cache
 C:\client\prashant  dhawalkar\repository\hellowebapp\HelloAzureWebApp\HelloAzureWebApp\obj\Debug\net9.0\ref\HelloAzureWebApp.dll
+C:\client\prashant  dhawalkar\repository\hellowebapp\HelloAzureWebApp\HelloAzureWebApp\obj\Debug\net9.0\HelloAzureWebApp.sourcelink.json
