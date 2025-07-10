@@ -52,7 +52,7 @@ stages:
 
               - task: AzureWebApp@1
                 inputs:
-                  azureSubscription: 'AzureWebAppConnection'
+                  azureSubscription: 'azureconnect'
                   appType: 'webApp'
                   appName: 'helloazurewebapp-dev'
                   package: '$(Pipeline.Workspace)/drop'
