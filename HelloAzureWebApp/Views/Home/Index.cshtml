@@ -1,0 +1,9 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    var envMessage = Environment.GetEnvironmentVariable("ENV_MESSAGE") ?? "Default Environment";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Hello Azure Web App!</h1>
+    <p class="lead">@envMessage</p>
+</div>
