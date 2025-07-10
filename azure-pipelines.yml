@@ -6,27 +6,53 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  outputDir: '$(Build.ArtifactStagingDirectory)'
 
-steps:
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '8.0.x'
+stages:
 
-- script: dotnet restore
-  displayName: 'Restore NuGet packages'
+- stage: Build
+  displayName: 'Build and Test'
+  jobs:
+    - job: Build
+      steps:
+        - task: UseDotNet@2
+          inputs:
+            packageType: 'sdk'
+            version: '8.0.x'
 
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'Build the project'
+        - script: dotnet build --configuration $(buildConfiguration)
+          displayName: 'Build project'
 
-- script: dotnet test --no-restore --verbosity normal
-  displayName: 'Run unit tests'
+        - script: dotnet test --no-restore --verbosity normal
+          displayName: 'Run unit tests'
 
-- script: dotnet publish --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
-  displayName: 'Publish output'
+        - script: dotnet publish --configuration $(buildConfiguration) --output $(outputDir)
+          displayName: 'Publish app'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+        - task: PublishBuildArtifacts@1
+          inputs:
+            PathtoPublish: '$(outputDir)'
+            ArtifactName: 'drop'
+            publishLocation: 'Container'
+
+- stage: Deploy
+  displayName: 'Deploy to Azure Web App'
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+    - deployment: DeployWeb
+      environment: 'dev'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - task: DownloadBuildArtifacts@0
+                inputs:
+                  artifactName: 'drop'
+
+              - task: AzureWebApp@1
+                inputs:
+                  azureSubscription: 'AzureWebAppConnection'
+                  appType: 'webApp'
+                  appName: 'helloazurewebapp-dev'
+                  package: '$(Pipeline.Workspace)/drop'
