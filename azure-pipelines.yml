@@ -7,6 +7,7 @@ pool:
 variables:
   buildConfiguration: 'Release'
   outputDir: '$(Build.ArtifactStagingDirectory)'
+  projectFolder: 'HelloAzureWebApp'
 
 stages:
 
@@ -22,12 +23,15 @@ stages:
 
         - script: dotnet build --configuration $(buildConfiguration)
           displayName: 'Build project'
+          workingDirectory: '$(projectFolder)'
 
         - script: dotnet test --no-restore --verbosity normal
           displayName: 'Run unit tests'
+          workingDirectory: '$(projectFolder)'
 
         - script: dotnet publish --configuration $(buildConfiguration) --output $(outputDir)
           displayName: 'Publish app'
+          workingDirectory: '$(projectFolder)'
 
         - task: PublishBuildArtifacts@1
           inputs:
