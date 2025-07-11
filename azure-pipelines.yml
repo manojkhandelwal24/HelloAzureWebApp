@@ -55,7 +55,16 @@ stages:
                   azureSubscription: 'azureconnect'
                   KeyVaultName: 'my-kevault-devops'
                   SecretsFilter: 'MyAppPassword'
-                  
+
+              - script: |
+                  echo Verifying secret...
+                  IF NOT DEFINED MyAppPassword (
+                    echo ❌ Secret MyAppPassword not found!
+                    exit /b 1
+                  ) ELSE (
+                    echo ✅ Secret MyAppPassword loaded successfully.
+                  )
+                displayName: 'Verify Key Vault Secret (Windows CMD)'
 
               - task: DownloadBuildArtifacts@0
                 inputs:
