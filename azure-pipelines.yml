@@ -8,6 +8,7 @@ variables:
   buildConfiguration: 'Release'
   outputDir: '$(Build.ArtifactStagingDirectory)'
   projectFolder: 'HelloAzureWebApp'
+  webAppName: 'helloazurewebapp-dev'
 
 stages:
 - stage: Build
@@ -59,14 +60,14 @@ stages:
               - task: DownloadBuildArtifacts@0
                 inputs:
                   artifactName: 'drop'
-              - script: |
-                  echo "Using secret from Key Vault: $(MyAppPassword)"
-                displayName: 'Use secret from Key Vault'
 
-              
               - task: AzureWebApp@1
                 inputs:
                   azureSubscription: 'azureconnect'
                   appType: 'webApp'
-                  appName: 'helloazurewebapp-dev'
+                  appName: '$(webAppName)'
                   package: '$(Pipeline.Workspace)/drop'
+
+              - script: |
+                  curl -I https://$(webAppName).azurewebsites.net
+                displayName: 'Verify deployment'
