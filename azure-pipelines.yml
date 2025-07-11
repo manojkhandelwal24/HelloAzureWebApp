@@ -52,7 +52,7 @@ stages:
               - task: AzureKeyVault@2
                 inputs:
                   azureSubscription: 'azureconnect'
-                  KeyVaultName: 'my-keyvault-devops'
+                  KeyVaultName: 'my-kevault-devops'
                   SecretsFilter: 'MyAppPassword'
                   RunAsPreJob: true
 
