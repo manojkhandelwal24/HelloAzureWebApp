@@ -55,7 +55,7 @@ stages:
                   azureSubscription: 'azureconnect'
                   KeyVaultName: 'my-kevault-devops'
                   SecretsFilter: 'MyAppPassword'
-                  RunAsPreJob: true
+                  
 
               - task: DownloadBuildArtifacts@0
                 inputs:
