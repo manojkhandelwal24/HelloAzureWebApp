@@ -69,5 +69,12 @@ stages:
                   package: '$(Pipeline.Workspace)/drop'
 
               - script: |
-                  curl -I https://$(webAppName).azurewebsites.net
-                displayName: 'Verify deployment'
+                  echo "Verifying deployment at: https://$(webAppName).azurewebsites.net"
+                  for i in {1..5}
+                  do
+                    echo "Attempt $i..."
+                    curl -I https://$(webAppName).azurewebsites.net && break
+                    echo "Retrying in 10 seconds..."
+                    sleep 10
+                  done
+                displayName: 'Verify deployment with retries'
