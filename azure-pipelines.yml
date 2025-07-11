@@ -55,6 +55,7 @@ stages:
                   azureSubscription: 'azureconnect'
                   KeyVaultName: 'my-kevault-devops'
                   SecretsFilter: 'MyAppPassword'
+                  RunAsPreJob: true
 
               - script: |
                   echo Verifying secret...
