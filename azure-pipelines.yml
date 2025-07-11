@@ -10,7 +10,6 @@ variables:
   projectFolder: 'HelloAzureWebApp'
 
 stages:
-
 - stage: Build
   displayName: 'Build and Test'
   jobs:
@@ -50,10 +49,21 @@ stages:
         runOnce:
           deploy:
             steps:
+              - task: AzureKeyVault@2
+                inputs:
+                  azureSubscription: 'azureconnect'
+                  KeyVaultName: 'my-keyvault-devops'
+                  SecretsFilter: 'MyAppPassword'
+                  RunAsPreJob: true
+
               - task: DownloadBuildArtifacts@0
                 inputs:
                   artifactName: 'drop'
+              - script: |
+                  echo "Using secret from Key Vault: $(MyAppPassword)"
+                displayName: 'Use secret from Key Vault'
 
+              
               - task: AzureWebApp@1
                 inputs:
                   azureSubscription: 'azureconnect'
