@@ -8,7 +8,7 @@ variables:
   buildConfiguration: 'Release'
   outputDir: '$(Build.ArtifactStagingDirectory)'
   projectFolder: 'HelloAzureWebApp'
-  webAppName: 'helloazurewebapp-dev'
+  webAppUrl: 'https://helloazurewebapp-dev-h7cyfqgaayajcuc6.westus2-01.azurewebsites.net'
 
 stages:
 - stage: Build
@@ -65,17 +65,17 @@ stages:
                 inputs:
                   azureSubscription: 'azureconnect'
                   appType: 'webApp'
-                  appName: '$(webAppName)'
+                  appName: 'helloazurewebapp-dev'
                   package: '$(Pipeline.Workspace)/drop'
 
               - script: |
-                  echo Verifying deployment at: https://$(webAppName).azurewebsites.net
+                  echo Verifying deployment at: $(webAppUrl)
                   set RETRIES=5
                   set COUNT=0
                   :loop
                   set /A COUNT+=1
                   echo Attempt %COUNT%...
-                  curl -I https://$(webAppName).azurewebsites.net
+                  curl -I $(webAppUrl)
                   IF %ERRORLEVEL% EQU 0 (
                     echo Deployment verified.
                     goto end
