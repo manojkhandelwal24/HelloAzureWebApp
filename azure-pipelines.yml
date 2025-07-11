@@ -59,12 +59,15 @@ stages:
 
               - script: |
                   echo Verifying secret...
-                  IF NOT DEFINED MyAppPassword (
-                    echo ❌ Secret MyAppPassword not found!
-                    exit /b 1
-                  ) ELSE (
-                    echo ✅ Secret MyAppPassword loaded successfully.
-                  )
+                    if "%MyAppPassword%"=="" (
+                      echo ❌ Secret MyAppPassword not found!
+                      exit /b 1
+                    ) else (
+                      echo ✅ Secret loaded: %MyAppPassword%
+                    )
+                  displayName: 'Verify Key Vault Secret (Windows CMD)'
+                  env:
+                    MyAppPassword: $(MyAppPassword)
                 displayName: 'Verify Key Vault Secret (Windows CMD)'
 
               - task: DownloadBuildArtifacts@0
